@@ -7,6 +7,14 @@ import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+
 import {
   Commitment,
   Connection,
@@ -73,7 +81,7 @@ const Home = (props: HomeProps) => {
 
   const rpcUrl = props.rpcHost;
   const wallet = useWallet();
-  const cluster = props.network;
+
   const anchorWallet = useMemo(() => {
     if (
       !wallet ||
@@ -479,6 +487,33 @@ const Home = (props: HomeProps) => {
   return (
     <Container style={{ marginTop: 100 }}>
       <Container maxWidth="xs" style={{ position: 'relative' }}>
+      <Typography variant="h3" style={{color:'white'}}>MintZero Gold</Typography><br/>
+        <img src={"/gold.png"} alt="image" 
+        style={{
+          paddingBottom:10,
+          marginLeft:50
+        }} /><br/>#384457
+        <TableContainer component={Paper} style={{background: 'rgb(21, 26, 31)'}}>  
+        <Table stickyHeader  aria-label="sticky table">  
+          <TableHead>  
+            <TableRow>  
+              <TableCell >Edition</TableCell>  
+              <TableCell> Edition Year </TableCell>
+              <TableCell >Carbon Credits</TableCell>  
+              <TableCell >Streaming Period</TableCell>  
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          <TableRow>
+            <TableCell>First Edition</TableCell>
+            <TableCell>2022</TableCell>
+            <TableCell>100/yr</TableCell>
+            <TableCell>10 years</TableCell>
+          </TableRow>
+          </TableBody>
+          </Table>
+        </TableContainer>
+<br/>
         <Paper
           style={{
             padding: 24,
@@ -599,8 +634,11 @@ const Home = (props: HomeProps) => {
                     gatekeeperNetwork={
                       candyMachine?.state?.gatekeeper?.gatekeeperNetwork
                     }
-                    clusterUrl={rpcUrl}
-                    cluster={cluster}
+                    clusterUrl={
+                      props.network === WalletAdapterNetwork.Devnet
+                        ? 'https://api.devnet.solana.com'
+                        : rpcUrl
+                    }
                     handleTransaction={async (transaction: Transaction) => {
                       setIsUserMinting(true);
                       const userMustSign = transaction.signatures.find(sig =>
@@ -696,7 +734,7 @@ const Home = (props: HomeProps) => {
             display="block"
             style={{ marginTop: 7, color: 'grey' }}
           >
-            Powered by METAPLEX
+            {/* Powered by METAPLEX */}
           </Typography>
         </Paper>
       </Container>
